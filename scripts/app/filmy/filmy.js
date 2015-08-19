@@ -4,13 +4,13 @@ angular.module('yellowjasmine.bazafilmow', ['ngRoute'])
         $routeProvider.
             when('/baza/filmow', {
                 templateUrl: 'scripts/app/filmy/filmy.html',
-                controller: 'filmsController'
+                controller: 'moviesController'
             }).
             otherwise({
                 redirectTo: '/baza/filmow'
             });
     }])
-.controller('filmsController',['$scope', '$http', function filmsController ($scope, $http){
+.controller('moviesController',['$scope', '$http', function moviesController ($scope, $http){
         $http.get('sample_data/dane.json').success(function(data){
             $scope.filmy = data;
         });
@@ -31,7 +31,7 @@ angular.module('yellowjasmine.bazafilmow', ['ngRoute'])
 
 
     }])
-    .controller("addFilmsController", function(){
+    .controller("addMoviesController", function(){
 
         this.film = {};
 
