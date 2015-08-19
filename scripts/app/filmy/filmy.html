@@ -1,0 +1,58 @@
+<!--  Store Header  -->
+<header>
+    <h1 class="text-center">Baza filmów</h1>
+    <h2 class="text-center">– w Angularjs –</h2>
+</header>
+<div class="jumbotron">
+
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 text-center opis" ng-repeat="film in filmy">
+            <h2>{{film.tytul}}</h2>
+            <p> Reżyser: <em> {{film.rezyser}}</em></p>
+            <p> Kategoria: <em> {{film.kategoria}}</em></p>
+            <p> Rok produkcji: <em> {{film.rokProdukcji}}</em></p>
+            <p> Ocena: <em> {{film.ocena}}</em></p>
+            <em> {{film.opis}}</em>
+        </div>
+    </div>
+
+    <div class="dodaj">
+        <strong>Dodaj nowy film</strong>
+        <!--  Review Form -->
+        <form name="Form" ng-controller="addFilmsController as filmCtrl" ng-submit="filmCtrl.addFilm(filmy)" novalidate>
+            <!--  Review Form -->
+            <fieldset class="form-group">
+               <label>Tytuł filmu: </label> <input ng-model="filmCtrl.film.tytul" type="text" class="form-control" title="tytulFilmu" placeholder="Wpisz tytuł" required/>
+            </fieldset>
+            <fieldset class="form-group">
+                <label>Reżyser: </label><input ng-model="filmCtrl.film.rezyser" type="text" class="form-control" placeholder="Wpisz reżysera filmu" title="RezyserFilmu" required/>
+            </fieldset>
+            <fieldset class="form-group">
+                <label>Kategoria: </label><select ng-model="filmCtrl.film.kategoria"  class="form-control" title="RezyserFilmu" required>
+                <option ng-repeat="kategoria in kategorie" value="{{kategoria.id}}">{{kategoria.name}}</option>
+            </select>
+            </fieldset>
+            <fieldset class="form-group">
+                <label>Rok produkcji: </label><input minlength="4" maxlength="4" min="1900" max="2015" ng-model="filmCtrl.film.rokProdukcji" type="number" class="form-control" placeholder="Wpisz rok produkcji filmu" title="RokProdukcji" required />
+            </fieldset>
+            <fieldset class="form-group">
+                <label>Ocena: </label><input ng-model="filmCtrl.film.ocena" min="0" max="10" type="number" class="form-control" placeholder="wpisz w skali od jednego do dziesięciu jak oceniasz film" title="Ocena" required/>
+            </fieldset>
+            <fieldset class="form-group">
+                <label>Opis filmu: </label><textarea ng-model="filmCtrl.film.opis" class="form-control" placeholder="Wpisz krótki opis filmu" title="OpisFilmu" required></textarea>
+            </fieldset>
+            <fieldset class="form-group">
+               <input ng-disabled="Form.$invalid" type="submit" class="btn btn-primary pull-right" value="Dodaj" />
+            </fieldset>
+        </form>
+        <div class="jumbotron">
+            <h4>Aby przekonwertować całą bazę do Json wybierz kliknij w poniższy przycisk</h4>
+        <button class="btn btn-primary btn-lg" ng-click="wyslij(filmy)" ng-disabled="przyciskDisabled">Konfertuj do JSON: </button><br /><br/>
+        <textarea rows="5" ng-model="rezultatJSON"></textarea>
+        </div>
+    </div>
+</div>
+
