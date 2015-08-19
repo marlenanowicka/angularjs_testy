@@ -1,15 +1,38 @@
 <!--  Store Header  -->
-<header>
+<div class="container">
+    <header>
     <h1 class="text-center">Baza filmów</h1>
     <h2 class="text-center">– w Angularjs –</h2>
 </header>
 <div class="jumbotron">
-
+    <form class="form-inline">
+        <div class="input-group">
+            <div class="input-group-addon">Tytuł: </div>
+            <input ng-model="titlemovies" type="text" class="form-control" placeholder="Wpisz tytuł"/>
+        </div>
+        <div class="input-group">
+            <div class="input-group-addon">Sortuj alfabetycznie: </div>
+                <select ng-model="wybor" class="form-control">
+                    <option value="tytul">Tytuł</option>
+                    <option value="rezyser">Reżyser</option>
+                    <option value="kategoia">Kategoria</option>
+                    <option value="rokProdukcji">Rok produkcji</option>
+                    <option value="ocena">Ocena</option>
+                </select>
+        </div>
+            <div class="input-group">
+                <label class="radio-inline">
+                    <input type="radio" ng-model="sortowanie" name="sortowanie" checked="checked" /> od A do Z
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="sortowanie" value="odwrotnie" name="sortowanie" /> od Z do A
+                </label>
+            </div>
+    </form>
 
 </div>
-<div class="container">
     <div class="row">
-        <div class="col-md-4 text-center opis" ng-repeat="film in filmy">
+        <div class="col-md-4 text-center opis" ng-repeat="film in filmy | filter:titlemovies | orderBy:wybor:sortowanie">
             <h2>{{film.tytul}}</h2>
             <p> Reżyser: <em> {{film.rezyser}}</em></p>
             <p> Kategoria: <em> {{film.kategoria}}</em></p>
@@ -25,21 +48,37 @@
         <form name="Form" ng-controller="addFilmsController as filmCtrl" ng-submit="filmCtrl.addFilm(filmy)" novalidate>
             <!--  Review Form -->
             <fieldset class="form-group">
-               <label>Tytuł filmu: </label> <input ng-model="filmCtrl.film.tytul" type="text" class="form-control" title="tytulFilmu" placeholder="Wpisz tytuł" required/>
+               <label>Tytuł filmu: </label>
+                <span ng-show="Form.tytul.$dirty && Form.tytul.$error.required">wymagane</span>
+                <input ng-model="filmCtrl.film.tytul" name="tytul" type="text" class="form-control" title="tytulFilmu" placeholder="Wpisz tytuł" required/>
             </fieldset>
             <fieldset class="form-group">
-                <label>Reżyser: </label><input ng-model="filmCtrl.film.rezyser" type="text" class="form-control" placeholder="Wpisz reżysera filmu" title="RezyserFilmu" required/>
+                <label>Reżyser: </label>
+                <span ng-show="Form.rezyser.$dirty && Form.rezyser.$error.required">wymagane</span>
+                <input ng-model="filmCtrl.film.rezyser" name="rezyser" type="text" class="form-control" placeholder="Wpisz reżysera filmu" title="RezyserFilmu" required/>
             </fieldset>
             <fieldset class="form-group">
-                <label>Kategoria: </label><select ng-model="filmCtrl.film.kategoria"  class="form-control" title="RezyserFilmu" required>
-                <option ng-repeat="kategoria in kategorie" value="{{kategoria.id}}">{{kategoria.name}}</option>
-            </select>
+                <label>Kategoria: </label>
+                <span ng-show="Form.kategoria.$dirty && Form.kategoria.$error.required">wymagane</span>
+                <select ng-model="filmCtrl.film.kategoria"  name="kategoria" class="form-control" title="RezyserFilmu" required>
+                    <option ng-repeat="kategoria in kategorie" value="{{kategoria.name}}">{{kategoria.name}}</option>
+                </select>
             </fieldset>
             <fieldset class="form-group">
-                <label>Rok produkcji: </label><input minlength="4" maxlength="4" min="1900" max="2015" ng-model="filmCtrl.film.rokProdukcji" type="number" class="form-control" placeholder="Wpisz rok produkcji filmu" title="RokProdukcji" required />
+                <label>Rok produkcji: </label>
+                <span ng-show="Form.produkcja.$dirty && Form.produkcja.$error.required">wymagane</span>
+                <span ng-show="Form.produkcja.$dirty && Form.produkcja.$error.minlength">data jest za krótka</span>
+                <span ng-show="Form.produkcja.$dirty && Form.produkcja.$error.maxlength">data jest za długa</span>
+                <span ng-show="Form.produkcja.$dirty && Form.produkcja.$error.min">zła data. data nie może być pźniejsza niż 1900 rok</span>
+                <span ng-show="Form.produkcja.$dirty && Form.produkcja.$error.max">zła data. data nie może być wcześniejsza niż rok obecny</span>
+                <input minlength="4" maxlength="4" min="1900" max="2015" ng-model="filmCtrl.film.rokProdukcji" name="produkcja" type="number" class="form-control" placeholder="Wpisz rok produkcji filmu" title="RokProdukcji" required />
             </fieldset>
             <fieldset class="form-group">
-                <label>Ocena: </label><input ng-model="filmCtrl.film.ocena" min="0" max="10" type="number" class="form-control" placeholder="wpisz w skali od jednego do dziesięciu jak oceniasz film" title="Ocena" required/>
+                <label>Ocena: </label>
+                <span ng-show="Form.ocena.$dirty && Form.ocena.$error.required">wymagane</span>
+                <span ng-show="Form.ocena.$dirty && Form.ocena.$error.min">minimalna ocena to 1</span>
+                <span ng-show="Form.ocena.$dirty && Form.ocena.$error.max">maxymalna ocena to 10</span>
+                <input ng-model="filmCtrl.film.ocena" min="0" max="10" name="ocena" type="number" class="form-control" placeholder="wpisz w skali od 1 do 10 jak oceniasz film" title="Ocena" required/>
             </fieldset>
             <fieldset class="form-group">
                 <label>Opis filmu: </label><textarea ng-model="filmCtrl.film.opis" class="form-control" placeholder="Wpisz krótki opis filmu" title="OpisFilmu" required></textarea>

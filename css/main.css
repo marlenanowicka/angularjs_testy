@@ -16,9 +16,9 @@ em {
 .ng-invalid.ng-dirty {
      border: 1px solid red;
  }
-.ng-valid.ng-dirty {
-    border: 1px solid forestgreen;
-}
 .dodaj textarea {
     width: 100%;
+}
+.ng-show {
+    color: red
 }
